@@ -1,8 +1,13 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Domains\Identity\Http\Controllers\CurrentUserController;
+use App\Http\Controllers\AppConfigController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::prefix('v1')->name('v1.')->group(function () {
+    Route::get('/app-config', AppConfigController::class)->name('app-config');
+
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/user', CurrentUserController::class)->name('user');
+    });
+});
